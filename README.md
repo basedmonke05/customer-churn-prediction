@@ -1,60 +1,56 @@
 # customer-churn-prediction
-Churn Prediction Model Overview
+# Churn Prediction Model Overview
 
-This project is about creating a learning model that can predict when customers of a telecom company are likely to stop using their services. We want to find out which customers are at risk of leaving so we can try to keep them. The goal is to minimize the amount of money the company loses when customers leave.
+This project focuses on creating a machine learning model capable of predicting when telecom customers are likely to stop using their services. By identifying customers at risk of leaving, the company can proactively intervene, retain their business, and minimize churn-related revenue loss.
 
-Key Features and Approach:
+## Key Features and Approach
 
-The model is trained on a dataset called Telco-Customer-Churn.csv. This dataset has a lot of information about thousands of customers including information the services they use and how much they pay.
+The model is trained on the `Telco-Customer-Churn.csv` dataset, which contains detailed information across thousands of customers regarding their service usage and billing history. 
 
-We cleaned the data thoroughly. This included dealing with missing information making sure categories were standardized and converting data types. We also removed customer IDs.
+**Data Preprocessing:**
+The data was cleaned thoroughly by handling missing information, standardizing categories, converting data types, and dropping irrelevant identifiers (like customer IDs). Categorical features were encoded and numerical features were scaled for neural network compatibility.
 
-We also created features that give us insights into the business. These include:
+**Feature Engineering:**
+To extract deeper business insights, several custom features were engineered:
+* **Customer Lifecycle Stage:** Categorized customers based on tenure (e.g., 'New', 'Growing', 'Mature', 'Loyal').
+* **Revenue per Month:** A calculated score based on customer payments and tenure.
+* **Service Bundle Score:** A count of the services each customer uses to gauge engagement.
+* **Risk Indicators:** Derived features such as `HighRiskContract`, `FiberOpticUser`, and `SingleCustomer`.
+* **Price Sensitivity Indicators:** Identified high-monthly-spend customers.
+* **Interaction Features:** Calculated metrics like the `TenureChargesRatio` to understand behavioral relationships.
+* **Customer Stability Score:** A loyalty metric based on partner status, dependents, contract type, and tenure.
 
-* Customer Lifecycle Stage: We categorized customers based on how they have been with the company, such as 'New' 'Growing' 'Mature' or 'Loyal'.
+**Handling Class Imbalance:**
+Because non-churning customers heavily outnumber churning ones, class weights were applied to ensure the model did not become biased toward the majority class.
 
-* Revenue per Month: We calculated a score based on how much each customer pays and how long they have been with the company.
+---
 
-* Service Bundle Score: We counted how services each customer uses to see how engaged they are.
+## Deep Neural Network Architecture
 
-* Risk Indicators: We created features like HighRiskContract, FiberOpticUser and SingleCustomer based on what we learned from exploring the data.
+The predictive model was built using **PyTorch** with the following architecture and parameters:
+* **Structure:** Deep neural network with hidden layers utilizing `ReLU` activation.
+* **Regularization:** Incorporated `BatchNorm1d` for training stability and `Dropout` layers to prevent overfitting.
+* **Loss Function:** Used `BCEWithLogitsLoss` with `pos_weight` to strictly handle class imbalance.
+* **Optimization:** Powered by the `Adam` optimizer alongside a `ReduceLROnPlateau` scheduler to dynamically adjust learning rates.
 
-* Price Sensitivity Indicators: We identified customers who spend a lot of money each month.
+---
 
-* Interaction Features: We calculated ratios like TenureChargesRatio to understand how different aspects of customer behavior are related.
+## Model Performance and Business Impact
 
-* Customer Stability Score: We created a score that shows how loyal each customer is based on their partner status, dependents, contract type and how long they have been with the company.
+The model was evaluated rigorously to ensure high performance on unseen data, balancing accurate predictions with real-world business needs.
 
-We scaled features and encoded categorical features so they could be used in the neural network.
+**Evaluation Metrics:**
+* **Precision:** Measures accuracy when predicting that a customer will leave.
+* **Recall:** Measures effectiveness at identifying all actual churners.
+* **F1-Score:** The harmonic mean balancing precision and recall.
+* **ROC-AUC Score:** Evaluates the model's overall ability to distinguish between churners and retained customers.
+* **Precision-Recall Curve:** Analyzes the trade-off between precision and recall at various thresholds.
 
-We also dealt with the fact that the data is imbalanced. There are customers who do not leave than customers who do. We used class weights to make sure the model does not get too good at predicting the majority class.
+**Financial Impact Analysis:**
+Beyond standard ML metrics, a financial analysis was conducted to quantify the model's ROI:
+* Factored in **Customer Lifetime Value (CLV)**, the cost of retention campaigns, and the revenue saved by successfully retaining at-risk customers.
+* Accounted for the wasted cost of targeting false positives (customers not actually at risk) and the revenue lost from false negatives (missed churners).
+* Optimized the prediction threshold specifically to maximize the net business benefit.
 
-Deep Neural Network Architecture:
-
-We built a neural network using PyTorch. The network has hidden layers and uses ReLU activation. It also has BatchNorm1d for training and Dropout layers to prevent overfitting. We used BCEWithLogitsLoss with pos_weight to handle class imbalance and Adam optimizer with ReduceLROnPlateau scheduler for learning rates.
-
-Model Performance and Business Impact:
-
-The model performed well on data.
-
-We measured Precision, which shows how accurate the model is when it predicts that a customer will leave.
-
-We measured Recall, which shows how good the model is at identifying all customers who actually leave.
-
-We measured F1-Score, which's a combination of precision and recall.
-
-We also measured ROC AUC Score, which shows how well the model can distinguish between customers who leave and customers who do not.
-
-We looked at the Precision-Recall Curve, which helps us understand the trade-off between precision and recall.
-
-We did a financial analysis to see how much money the model can save the company.
-
-We considered Customer Lifetime Value, the cost of trying to keep customers and the revenue saved from identifying customers who are at risk of leaving.
-
-We also considered the wasted cost of trying to keep customers who're not at risk of leaving and the revenue lost from customers who leave.
-
-We calculated the benefit and return on investment.
-
-We optimized the prediction threshold to maximize the business benefit.
-
-This model is a way to identify customers who are at risk of leaving. It can help the company keep customers and reduce the amount of money lost when customers leave. The Churn Prediction Model provides a framework, for identifying potential churners enabling proactive intervention and delivering tangible financial benefits by significantly reducing churn-related revenue loss. The telecom company can use the Churn Prediction Model to minimize revenue loss and keep customers.
+**Conclusion:**
+The Churn Prediction Model provides a robust framework for identifying potential churners. By enabling proactive intervention, it delivers tangible financial benefits and significantly reduces churn-related revenue loss.
